@@ -3,17 +3,36 @@ let ctx;
 let width;
 let height;
 let numbers = [];
-let running  = false;
 let i = 0;
 let j = 0;
-let algorithm = "BubbleSort";
+let min = 0;
 let nWidth;
-let maxNumber = 25;
+let maxNumber = 0;
 
-function sort() {
-    console.log(algorithm);
+let idAnimBubbleSort;
+let idAnimSelectionSort;
+
+function sort() {  
+    changeMaxNumbers();
     create();
-    render();
+    cancelAnimationFrame(idAnimBubbleSort);
+    cancelAnimationFrame(idAnimSelectionSort);
+    if (document.getElementById('selectionsort').checked) {
+        console.log("SelectionSort");
+        init(0, 1);
+        renderSelectionSort();
+    } else if (document.getElementById('bubblesort').checked) {
+        console.log("BubbleSort");
+        init(0, 0);        
+        renderBubbleSort();
+    }
+}
+
+function changeMaxNumbers(){
+    var rangeValue = document.getElementById("numbersRange").value;
+    var output = document.getElementById("lblRangeValue");
+    maxNumber = rangeValue;
+    output.innerHTM = rangeValue;
 }
 
 function create() {
@@ -21,14 +40,14 @@ function create() {
     ctx = canvas.getContext("2d");
     width = ctx.canvas.clientWidth;
     height = ctx.canvas.clientHeight;
-    nWidth = width / maxNumber;  
-    init();
+    nWidth = width / maxNumber; 
 }
 
-function init() {
+function init(iniI, iniJ) {    
+    i = iniI;
+    j = iniJ;
+    min = 0;
     nWidth = width / maxNumber;  
-    i = 0;
-    j = 0;
     numbers = [];
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (k = 0; k < maxNumber; k++) {
@@ -39,26 +58,52 @@ function init() {
     }
 }
 
-function render() {
-    requestAnimationFrame(render);
-    if (running) {
+function renderBubbleSort() {
+    idAnimBubbleSort = requestAnimationFrame(renderBubbleSort);
+    if (i < numbers.length) {
         if (numbers[j].value > numbers[j + 1].value) {
-            swap(numbers, j, j + 1)      
+            swap(numbers, j, j + 1);
         }
-        if (i < numbers.length) {
-            j++
-            if (j >= numbers.length - i - 1) {
-                j = 0
-                i++
-            }            
-        } else {
-            running = false;
+        j++;
+        if (j >= numbers.length - i - 1) {
+            j = 0;
+            i++;
         }
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        for (k = 0; k < numbers.length; k++) {
-            numbers[k].pos = k * nWidth;
-            draw(numbers[k], nWidth);
+    } else {
+        cancelAnimationFrame(idAnimBubbleSort);
+    }
+    drawArray();
+}
+
+function renderSelectionSort() {
+    idAnimSelectionSort = requestAnimationFrame(renderSelectionSort);    
+    if (i < numbers.length - 1) {
+        min = i;
+        if (j < numbers.length) {
+            if (numbers[j].value < numbers[min].value) {
+                min = j;
+            }
+            j++;
         }
+        if (numbers[i] != numbers[min]) {
+            swap(numbers, i, min);
+        }       
+        if (j >= numbers.length) {                   
+            i++;
+            min = i;
+            j = i + 1;
+        }
+    } else {
+        cancelAnimationFrame(idAnimSelectionSort);
+    }
+    drawArray();
+}
+
+function drawArray(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    for (k = 0; k < numbers.length; k++) {
+        numbers[k].pos = k * nWidth;
+        draw(numbers[k], nWidth);
     }
 }
 
@@ -92,35 +137,6 @@ function posRand(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function start(){
-    running = true;
-}
-
-function stop(){
-    running = false
-}
-
 document.addEventListener("change", function(e) {
-    var rangeValue = document.getElementById("numbersRange").value;
-    var output = document.getElementById("lblRangeValue");
-    maxNumber = rangeValue;
-    output.innerHTM = rangeValue;
-    init() 
-    start() 
+   sort();
 });
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowUp') {
-        //console.log(algorithm +" started...");
-        //start()
-    } else if (event.key === 'ArrowDown') {
-        //console.log(algorithm + " stopped...");
-        //stop()      
-    } else if (event.key === 'ArrowLeft') {
-        //console.log(algorithm + " restarted...");
-        //init()      
-    } else if (event.key === 'ArrowRight') {
-        //console.log(algorithm + " restarted...");
-        //init()      
-    }
- });

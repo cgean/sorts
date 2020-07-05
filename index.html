@@ -10,13 +10,20 @@
                 style="display:block;margin-left:auto;margin-right:auto;border:2px solid;border-color: gray;
                 background-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255));">                
             </canvas>           
+        </div>        
+        <div style="display:block;margin-left:auto;margin-right:auto;text-align:center;">
+            <div style="display:block;margin-left:auto;margin-right:auto;
+            text-align:left;width:120px;padding-top: 10px;padding-bottom: 10px;color: rgb(145, 145, 145);">
+                <div>
+                    <input type="radio" id="bubblesort" name="sorts" value="bubblesort" checked>
+                    <label for="bubblesort">BubbleSort</label>
+                </div>
+                <div>
+                    <input type="radio" id="selectionsort" name="sorts" value="selectionsort">
+                    <label for="selectionsort">SelectionSort</label>
+                </div>
+            </div> 
         </div>
-        
-        <div style="display:block;margin-left:auto;margin-right:auto;text-align: center;">
-            <label id="lblsort" style="color: rgb(170, 170, 170);">BubbleSort</label>
-            <br>
-        </div>
-        
         <div id="controls" style="display:block;margin-left:auto;margin-right:auto;text-align: center;">
             <label style="color: rgb(170, 170, 170);">2</label>
             <input type="range" id="numbersRange" name="numbersRange" min="2" max="100" value="50"
