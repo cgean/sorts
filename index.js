@@ -8,7 +8,7 @@ let j = 0;
 let min = 0;
 let nWidth;
 let maxNumber = 0;
-
+//TEST
 let idAnimBubbleSort;
 let idAnimSelectionSort;
 
